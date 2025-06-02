@@ -1,0 +1,9 @@
+{
+  "name": "tiered-gas-generator",
+  "version": "1.1.7",
+  "title": "Tiered Gas Generator",
+  "author": "yokmp",
+  "dependencies": ["base >= 2.0", "? reskins-library"],
+  "description": "Tiered Gas Generators. Up to 6 tiers.",
+  "factorio_version": "2.0"
+}

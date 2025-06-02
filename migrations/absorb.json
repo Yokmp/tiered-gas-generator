@@ -1,0 +1,27 @@
+{
+    "item":
+    [
+        ["adamo-cinefaction-gas-generator","gas-power-station-1"],
+        ["gas-generator","gas-power-station-1"],
+        ["mk1-gas-generator","gas-power-station-2"],
+        ["mk2-gas-generator","gas-power-station-3"],
+        ["mk3-gas-generator","gas-power-station-4"]
+    ],
+	"entity":
+    [
+        ["adamo-cinefaction-gas-generator","gas-power-station-1"],
+        ["gas-generator","gas-power-station-1"],
+        ["mk1-gas-generator","gas-power-station-2"],
+        ["mk2-gas-generator","gas-power-station-3"],
+        ["mk3-gas-generator","gas-power-station-4"]
+    ],
+    "recipe":
+    [
+        ["adamo-cinefaction-gas-generator","gas-power-station-1"],
+        ["gas-generator","gas-power-station-1"],
+        ["mk1-gas-generator","gas-power-station-2"],
+        ["mk2-gas-generator","gas-power-station-3"],
+        ["mk3-gas-generator","gas-power-station-4"]
+    ]
+}
+

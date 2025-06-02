@@ -1,0 +1,75 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.1.7
+Date: 2024-05-22
+  Changes:
+    - fixed max power output sometimes not working correctly
+    - fixed misspelling in language config
+---------------------------------------------------------------------------------------------------
+Version: 1.1.6
+Date: 2024-05-07
+  Changes:
+    - Artisanal reskin hotfix for alpha adjustments
+---------------------------------------------------------------------------------------------------
+Version: 1.1.5
+Date: 2024-11-22
+  Changes:
+    - changed the way the surface_property key is inserted
+---------------------------------------------------------------------------------------------------
+Version: 1.1.4
+Date: 2024-11-16
+  Changes:
+    - changed the output priority to primary
+    - fixed the low image quality, i think
+---------------------------------------------------------------------------------------------------
+Version: 1.1.3
+Date: 2024-11-16
+  Changes:
+    - fixed overpowered thruster fuel and oxidizer fuel values, they are now at vanilla levels
+---------------------------------------------------------------------------------------------------
+Version: 1.1.2
+Date: 2024-11-15
+  Changes:
+    - you can now only place it on pressurized surfaces
+    - fixed fuel values, petroleum gas now holds the most value (1.2KJ) of the vanilla fluids
+    - fixed 10k staks in rockets, they are limited to 10 now
+---------------------------------------------------------------------------------------------------
+Version: 1.1.1
+Date: 2024-10-28
+  Changes:
+    - fixed pipe connections, sry
+---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: 2024-10-28
+  Minor Features:
+    - new setting: recycle old machines in recipes (default)
+  Changes:
+    - Space Age is supported
+---------------------------------------------------------------------------------------------------
+Version: 1.0.4
+Date: 2024-10-25
+  Changes:
+    - changed dependency to 2.0
+---------------------------------------------------------------------------------------------------
+Version: 1.0.3
+Date: 2024-05-04
+  Changes:
+    - Space Explorations Methane gas now has the same fuel value as petroleum gas
+---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 2022-05-25
+  Changes:
+    - Artisanal_Reskin option now also applies custom tints if the reskin lib is installed
+    - also applies the tier icons set by the reskin mod
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 2022-05-17
+  Minor Features:
+    - new setting to change color sheme
+  Changes:
+    - Minor tweaks to masks. Texture details are more visible now.
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 2022-05-16
+  Changes:
+    - Initial release
+
