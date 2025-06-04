@@ -1,6 +1,9 @@
-local hit_effects = require("__base__/prototypes/entity/hit-effects")
+
+
+local hit_effects = require("__base__/prototypes/entity/hit-effects")       ---@diagnostic disable-line:different-requires
 local sounds = require("__base__.prototypes.entity.sounds")
 local power = settings.startup["generator-power"].value
+
 local function animation(tint)
   return {
     layers = {
@@ -52,7 +55,6 @@ local empty_sprite = {
   width = 1,
   height = 1,
 }
-
 
 local pipe_path = {
   north = empty_sprite,
