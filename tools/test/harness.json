@@ -1,0 +1,16 @@
+{
+  "mod_name": "tiered-gas-generator",
+  "settings_mod": "tiered-gas-generator",
+  "debug_setting": "tiered-gas-generator-test-mode",
+  "report_path": "tiered-gas-generator/test-report.json",
+  "mod_profile": "tgg_vanilla",
+  "artifacts": ["test-report.json"],
+  "profiles": {"default": {}},
+  "setting_profiles": {
+    "default": {"vanilla-fluid-fuel-values": true},
+    "fuel_values_off": {"vanilla-fluid-fuel-values": false}
+  },
+  "setting_profile_groups": {
+    "all": ["default", "fuel_values_off"]
+  }
+}

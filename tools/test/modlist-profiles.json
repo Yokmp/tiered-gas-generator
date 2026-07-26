@@ -1,0 +1,15 @@
+{
+  "profile_groups": {
+    "all": ["tgg_vanilla", "tgg_space_age"]
+  },
+  "profiles": {
+    "tgg_vanilla": {
+      "label": "Tiered Gas Generator (vanilla)",
+      "mods": ["tiered-gas-generator"]
+    },
+    "tgg_space_age": {
+      "label": "Tiered Gas Generator + Space Age",
+      "mods": ["elevated-rails", "quality", "space-age", "tiered-gas-generator"]
+    }
+  }
+}

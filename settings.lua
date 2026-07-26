@@ -44,3 +44,15 @@ data:extend({
 		order = "d"
 	},
 })
+--#region debug
+data:extend({
+	{
+		name = "tiered-gas-generator-test-mode",
+		type = "bool-setting",
+		setting_type = "startup",
+		default_value = false,
+		order = "z[test]-a[mode]",
+		hidden = true,
+	},
+})
+--#endregion
