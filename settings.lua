@@ -29,6 +29,14 @@ data:extend({
 		order = "bb"
 	},
 	{
+		name = "generator-usage-priority",
+		type = "string-setting",
+		setting_type = "startup",
+		default_value = "primary-output",
+		allowed_values = {"primary-output", "secondary-output", "tertiary"},
+		order = "bc"
+	},
+	{
 		name = "color-scheme",
 		type = "string-setting",
 		setting_type = "startup",

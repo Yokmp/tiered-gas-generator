@@ -99,7 +99,7 @@ local smoke = {
 data:extend({smoke})
 
 
-function _entity(prefix, tint, tier, tiers)
+function _entity(prefix, tint, tier, tiers, usage_priority)
   local name = prefix..tier
   local entity = {
     type = "generator",
@@ -157,8 +157,7 @@ function _entity(prefix, tint, tier, tiers)
 
     energy_source = {
       type = "electric",
-      usage_priority = "primary-output",
-      -- usage_priority = "secondary-output",
+      usage_priority = usage_priority,
       emissions_per_minute = { pollution = 30 },
       render_no_network_icon = true,
       output_flow_limit = power*tier.."MW",

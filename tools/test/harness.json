@@ -7,10 +7,24 @@
   "artifacts": ["test-report.json"],
   "profiles": {"default": {}},
   "setting_profiles": {
-    "default": {"vanilla-fluid-fuel-values": true},
-    "fuel_values_off": {"vanilla-fluid-fuel-values": false}
+    "default": {
+      "vanilla-fluid-fuel-values": true,
+      "generator-usage-priority": "primary-output"
+    },
+    "fuel_values_off": {
+      "vanilla-fluid-fuel-values": false,
+      "generator-usage-priority": "primary-output"
+    },
+    "priority_secondary": {
+      "vanilla-fluid-fuel-values": true,
+      "generator-usage-priority": "secondary-output"
+    },
+    "priority_tertiary": {
+      "vanilla-fluid-fuel-values": true,
+      "generator-usage-priority": "tertiary"
+    }
   },
   "setting_profile_groups": {
-    "all": ["default", "fuel_values_off"]
+    "all": ["default", "fuel_values_off", "priority_secondary", "priority_tertiary"]
   }
 }

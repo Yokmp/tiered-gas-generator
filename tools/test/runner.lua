@@ -14,6 +14,7 @@ function runner.run(profile)
 	profile = profile or {}
 	local tier_count = tonumber(settings.startup["generator-tiers"].value)
 	local base_power = settings.startup["generator-power"].value
+	local usage_priority = settings.startup["generator-usage-priority"].value
 	local report = {
 		schema = "tiered-gas-generator-test-report/v1",
 		mod = "tiered-gas-generator",
@@ -27,6 +28,7 @@ function runner.run(profile)
 			settings = {
 				generator_tiers = tier_count,
 				generator_power = base_power,
+				generator_usage_priority = usage_priority,
 				vanilla_fluid_fuel_values = settings.startup["vanilla-fluid-fuel-values"].value,
 			},
 			fluid_fuel_values = {},
@@ -97,6 +99,7 @@ function runner.run(profile)
 				and entity.effectivity == tier
 				and entity.max_power_output == expected_power
 				and entity.energy_source
+				and entity.energy_source.usage_priority == usage_priority
 				and entity.energy_source.output_flow_limit == expected_power,
 			nil,
 			entity

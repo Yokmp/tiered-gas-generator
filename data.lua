@@ -6,6 +6,7 @@ local entity,item,recipe,technology,icon_style
 
 local tiers = tonumber(settings.startup["generator-tiers"].value)
 local scheme = tostring(settings.startup["color-scheme"].value)
+local usage_priority = tostring(settings.startup["generator-usage-priority"].value)
 
 local tints = {
 	midnightxrush = {
@@ -88,7 +89,7 @@ for i = 1, max_tiers do
 	if i<=tiers then hidden = false else hidden = true end
   tier			 = i
 	name 			 = prefix..tostring(tier)
-	entity 		 = _entity(prefix, tint[tier], tier, tiers)
+	entity 		 = _entity(prefix, tint[tier], tier, tiers, usage_priority)
 	item 			 = _item(name, tint[tier])
 	recipe 		 = _recipe(prefix, tier, hidden)
 	technology = _technology(prefix, tint[tier], tier, tiers, entity.max_power_output, hidden)
