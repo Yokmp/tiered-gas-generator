@@ -2,48 +2,113 @@
 require("util")
 
 local max_tiers = settings.startup["generator-tiers"].value
-
-
-local fuelfactors = { -- they are actually divisors
-	-- topower 						=   0.0166666667,
-	-- ["coal"] 					=   3.0,
-	["petroleum-gas"] 		=  1.0,
-	["light-oil"] 				=  1.5,
-	["heavy-oil"] 				=  2.0,
-	["crude-oil"] 				=  3.0,
-	["methane"] 					=  0.5,
-	["syngas"] 						=  0.33, --methane*2
---	["diesel-fuel"]				= 100.0,
---	["se-methane-gas"]		= 100.0,
-}
+local fuel_config = require("fuel-config")
 
 
 ---divide energy by given argument, return energy string
 ---@param energy string
 ---@param div number
----@return string
+---@return string|nil
 function energy_div(energy, div)
+	if type(energy) ~= "string" or type(div) ~= "number" or div <= 0 then return nil end
 	local num = energy:match "[0-9%.]+"
 	local alpha = energy:match "%a+"
+	if not num or not alpha then return nil end
 	num = num/div
 	return (num..alpha)
 end
 
 
-function apply_vanilla_fluid_fuel_stats()
-	local solid_fuel = check_item(data.raw.item["solid-fuel"])
-	if not solid_fuel then return false end
+local function has_positive_fuel_value(prototype)
+	local fuel_value = prototype and prototype.fuel_value
+	if type(fuel_value) ~= "string" then return false end
+	local ok, parsed = pcall(util.parse_energy, fuel_value)
+	return ok and parsed and parsed > 0
+end
 
-	local solid_fuel_value = get_fuel_value(solid_fuel)
 
-	for k,v in pairs(fuelfactors) do
-		apply_fluid_fuel_stat(k, energy_div(solid_fuel_value, v))
+---returns the fuel value of the first reference_item it finds
+---@return string|nil
+---@return string|nil
+function get_fluid_fuel_reference()
+	for _, item_name in ipairs(fuel_config.reference_items) do
+		local item = check_item(data.raw.item[item_name])
+		if item and has_positive_fuel_value(item) then
+			return get_fuel_value(item), item_name
+		end
 	end
+	return nil, nil
+end
 
-	-- apply_fluid_fuel_stat("light-oil", 		 energy_div(solid_fuel_value, fuelfactors["light-oil"]))
-	-- apply_fluid_fuel_stat("heavy-oil", 		 energy_div(solid_fuel_value, fuelfactors["heavy-oil"]))
-	-- apply_fluid_fuel_stat("petroleum-gas", energy_div(solid_fuel_value, fuelfactors["petroleum-gas"]))
-	-- apply_fluid_fuel_stat("crude-oil",		 energy_div(solid_fuel_value, fuelfactors["crude-oil"]))
+
+function get_fluid_fuel_config()
+	return fuel_config
+end
+
+
+local function source_is_enabled(source_name, source)
+	if source_name ~= "base" and not mods[source_name] then return false end
+	if source.startup_setting then
+		local setting = settings.startup[source.startup_setting]
+		return setting and setting.value == true
+	end
+	return true
+end
+
+
+local function apply_fluid_fuel_source(source_name, reference_value)
+	local source = fuel_config.sources[source_name]
+	if not source or not source_is_enabled(source_name, source) then return {} end
+
+	local applied = {}
+	for canonical_name, fluid_name in pairs(source.fluids) do
+		local divisor = fuel_config.fuelfactors[canonical_name]
+		local prototype_name = source.prefix .. fluid_name
+		local fluid = check_fluid(data.raw.fluid[prototype_name])
+		if fluid and divisor and not has_positive_fuel_value(fluid) then
+			local fuel_value = energy_div(reference_value, divisor)
+			if fuel_value then
+				apply_fluid_fuel_stat(fluid, fuel_value)
+				applied[prototype_name] = fuel_value
+			end
+		end
+	end
+	return applied
+end
+
+
+---Applies configured fuel values to vanilla petroleum fluids when the
+---vanilla-fluid-fuel-values startup setting is enabled. The optional reference
+---value overrides the automatic solid-fuel, coal, then wood lookup.
+---@param reference_value? string Energy value such as "12MJ"
+---@return table<string, string>|false applied Prototype names mapped to their assigned fuel values, or false when no reference fuel exists
+function apply_vanilla_fluid_fuel_stats(reference_value)
+	reference_value = reference_value or get_fluid_fuel_reference()
+	if not reference_value then return false end
+	return apply_fluid_fuel_source("base", reference_value)
+end
+
+
+---Applies configured fuel values to fluids provided by active compatible mods.
+---Prototype names are resolved through the prefixes and aliases in fuel-config;
+---fluids that already have a positive fuel value are left unchanged. The
+---optional reference value overrides the automatic solid-fuel, coal, then wood
+---lookup.
+---@param reference_value? string Energy value such as "12MJ"
+---@return table<string, string>|false applied Prototype names mapped to their assigned fuel values, or false when no reference fuel exists
+function apply_mod_fluid_fuel_stats(reference_value)
+	reference_value = reference_value or get_fluid_fuel_reference()
+	if not reference_value then return false end
+
+	local applied = {}
+	for source_name in pairs(fuel_config.sources) do
+		if source_name ~= "base" then
+			for prototype_name, fuel_value in pairs(apply_fluid_fuel_source(source_name, reference_value)) do
+				applied[prototype_name] = fuel_value
+			end
+		end
+	end
+	return applied
 end
 
 

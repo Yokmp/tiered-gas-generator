@@ -15,6 +15,7 @@ function runner.run(profile)
 	local tier_count = tonumber(settings.startup["generator-tiers"].value)
 	local base_power = settings.startup["generator-power"].value
 	local usage_priority = settings.startup["generator-usage-priority"].value
+	local reference_fuel_value, reference_fuel_name = get_fluid_fuel_reference()
 	local report = {
 		schema = "tiered-gas-generator-test-report/v1",
 		mod = "tiered-gas-generator",
@@ -32,6 +33,10 @@ function runner.run(profile)
 				vanilla_fluid_fuel_values = settings.startup["vanilla-fluid-fuel-values"].value,
 			},
 			fluid_fuel_values = {},
+			fluid_fuel_reference = {
+				name = reference_fuel_name,
+				fuel_value = reference_fuel_value,
+			},
 		},
 	}
 
@@ -148,6 +153,101 @@ function runner.run(profile)
 			{expected = fuels_enabled, fuel_value = fluid and fluid.fuel_value}
 		)
 	end
+
+	add_case(
+		"fluid-fuel.reference",
+		"solid fuel is preferred as fluid fuel reference",
+		reference_fuel_name == "solid-fuel" and reference_fuel_value == data.raw.item["solid-fuel"].fuel_value,
+		nil,
+		report.context.fluid_fuel_reference
+	)
+
+	if mods["angelspetrochem"] then
+		local expected_angel_fuels = {
+			["angels-gas-methane"] = 2.0,
+			["angels-gas-natural-1"] = 2.0,
+			["angels-gas-raw-1"] = 3.0,
+			["angels-gas-residual"] = 4.0,
+			["angels-gas-synthesis"] = 4.0,
+			["angels-gas-hydrogen"] = 3.0,
+			["angels-gas-carbon-monoxide"] = 6.0,
+			["angels-gas-ethane"] = 2.0,
+			["angels-gas-butane"] = 1.5,
+			["angels-gas-methanol"] = 3.0,
+			["angels-gas-ethanol"] = 2.5,
+			["angels-liquid-fuel-oil"] = 1.25,
+			["angels-liquid-naphtha"] = 1.5,
+			["angels-liquid-ngl"] = 1.5,
+			["angels-liquid-mineral-oil"] = 2.0,
+			["angels-liquid-multi-phase-oil"] = 3.0,
+			["angels-liquid-vegetable-oil"] = 2.0,
+			["angels-liquid-fish-oil"] = 2.5,
+			["angels-liquid-black-liquor"] = 5.0,
+		}
+
+		local reference_joules = util.parse_energy(reference_fuel_value)
+		for fluid_name, divisor in pairs(expected_angel_fuels) do
+			local fluid = data.raw.fluid[fluid_name]
+			local actual_joules = fluid and fluid.fuel_value and util.parse_energy(fluid.fuel_value) or 0
+			local expected_joules = reference_joules / divisor
+			report.context.fluid_fuel_values[fluid_name] = fluid and fluid.fuel_value or "0J"
+			add_case(
+				"fluid-fuel.angels." .. fluid_name,
+				fluid_name .. " receives its configured fuel value",
+				math.abs(actual_joules - expected_joules) < 0.001,
+				nil,
+				{divisor = divisor, expected_joules = expected_joules, actual_fuel_value = fluid and fluid.fuel_value}
+			)
+		end
+
+		for _, fluid_name in ipairs({
+			"angels-gas-oxygen",
+			"angels-gas-chlorine",
+			"angels-gas-sulfur-dioxide",
+			"angels-liquid-nitric-acid",
+			"angels-liquid-molten-iron",
+			"angels-water-purified",
+		}) do
+			local fluid = data.raw.fluid[fluid_name]
+			add_case(
+				"fluid-fuel.angels.excluded." .. fluid_name,
+				fluid_name .. " remains non-fuel",
+				fluid and not fluid.fuel_value,
+				nil,
+				{fuel_value = fluid and fluid.fuel_value}
+			)
+		end
+
+		local methane = data.raw.fluid["angels-gas-methane"]
+		local configured_methane_value = methane.fuel_value
+		methane.fuel_value = "123kJ"
+		apply_mod_fluid_fuel_stats(reference_fuel_value)
+		local existing_value_was_preserved = methane.fuel_value == "123kJ"
+		methane.fuel_value = configured_methane_value
+		add_case(
+			"fluid-fuel.existing-value",
+			"an existing positive fluid fuel value is not overwritten",
+			existing_value_was_preserved
+		)
+	end
+
+	local solid_fuel = data.raw.item["solid-fuel"]
+	local coal = data.raw.item["coal"]
+	local solid_fuel_value = solid_fuel.fuel_value
+	local coal_value = coal.fuel_value
+	solid_fuel.fuel_value = nil
+	local _, coal_reference = get_fluid_fuel_reference()
+	coal.fuel_value = nil
+	local _, wood_reference = get_fluid_fuel_reference()
+	solid_fuel.fuel_value = solid_fuel_value
+	coal.fuel_value = coal_value
+	add_case(
+		"fluid-fuel.reference-fallback",
+		"fluid fuel reference falls back from solid fuel to coal and then wood",
+		coal_reference == "coal" and wood_reference == "wood",
+		nil,
+		{coal_reference = coal_reference, wood_reference = wood_reference}
+	)
 
 	return report
 end

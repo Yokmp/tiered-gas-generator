@@ -1,6 +1,6 @@
 {
   "profile_groups": {
-    "all": ["tgg_vanilla", "tgg_space_age"]
+    "all": ["tgg_vanilla", "tgg_space_age", "tgg_angels"]
   },
   "profiles": {
     "tgg_vanilla": {
@@ -10,6 +10,20 @@
     "tgg_space_age": {
       "label": "Tiered Gas Generator + Space Age",
       "mods": ["elevated-rails", "quality", "space-age", "tiered-gas-generator"]
+    },
+    "tgg_angels": {
+      "label": "Tiered Gas Generator + Angel's mods",
+      "mods": [
+        "angelsrefininggraphics",
+        "angelsrefining",
+        "angelspetrochemgraphics",
+        "angelspetrochem",
+        "angelssmeltinggraphics",
+        "angelssmelting",
+        "angelsbioprocessinggraphics",
+        "angelsbioprocessing",
+        "tiered-gas-generator"
+      ]
     }
   }
 }
