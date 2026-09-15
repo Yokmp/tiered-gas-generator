@@ -1,3 +1,37 @@
+-- Power Priority Updated creates alternate generator prototypes by appending a
+-- priority suffix, but its deep copies retain the original next_upgrade target.
+-- Keep upgrades inside the same priority family so prototype masks and the
+-- selected power priority remain consistent across tiers.
+if mods["PowerPriorityUpdated"] then
+	local generators = data.raw.generator or {}
+	local priority_suffixes = {
+		"-POWER-PRIORITY-PRIMARY",
+		"-POWER-PRIORITY-SECONDARY",
+	}
+
+	for tier = 1, 6 do
+		local original_name = "gas-power-station-" .. tier
+		local original = generators[original_name]
+
+		for _, suffix in ipairs(priority_suffixes) do
+			local alternate = generators[original_name .. suffix]
+			if alternate then
+				-- Priority variants are runtime replacements for the original entity and
+				-- must therefore obey the same placement and collision restrictions.
+				alternate.collision_mask = original.collision_mask
+					and table.deepcopy(original.collision_mask)
+					or nil
+
+				local alternate_upgrade = original.next_upgrade
+					and generators[original.next_upgrade .. suffix]
+					and (original.next_upgrade .. suffix)
+					or nil
+				alternate.next_upgrade = alternate_upgrade
+			end
+		end
+	end
+end
+
 --#region debug
 local test_mode = settings.startup["tiered-gas-generator-test-mode"]
 

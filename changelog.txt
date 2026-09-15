@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.9
+Date: 2026-09-15
+  Changes:
+    - fixed upgrade targets and collision masks for Power Priority Updated generator variants
+---------------------------------------------------------------------------------------------------
 Version: 1.1.8
 Date: 2026-05-22
   Changes:

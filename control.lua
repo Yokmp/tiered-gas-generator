@@ -61,7 +61,7 @@ local function create_generator_setup(surface, id, name, position, fluid_name, w
 		pole, load = create_load(surface, {x = position.x + 4, y = position.y})
 	end
 	if generator and fluid_name then
-		generator.fluidbox[1] = {name = fluid_name, amount = 100, temperature = 25}
+		generator.set_fluid(1, {name = fluid_name, amount = 100, temperature = 25})
 	end
 	table.insert(storage.tgg_test.setups, {
 		id = id,
@@ -176,7 +176,7 @@ local function evaluate_test_world()
 		local generator = setup.generator
 		local generated_last_tick = generator and generator.valid and generator.energy_generated_last_tick or 0
 		local generated = math.max(setup.peak_generated or 0, generated_last_tick)
-		local fluid = generator and generator.valid and generator.fluidbox[1] or nil
+		local fluid = generator and generator.valid and generator.get_fluid(1) or nil
 		local status = generator and generator.valid and generator.status or nil
 		local details = {
 			generated_last_tick = generated_last_tick,
@@ -225,7 +225,6 @@ script.on_nth_tick(60, function()
 	end
 end)
 --#endregion
-
 
 
 
