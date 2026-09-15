@@ -1,10 +1,11 @@
 {
   "name": "tiered-gas-generator",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "title": "Tiered Gas Generator",
   "author": "yokmp",
   "dependencies": [
     "base >= 2.1",
+    "? space-age",
     "? reskins-library",
     "? angelspetrochem",
     "? angelsbioprocessing",

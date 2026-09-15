@@ -94,6 +94,15 @@ function runner.run(profile)
 				and recipe.results and recipe.results[1] and recipe.results[1].name == name
 				and technology_unlocks_recipe(name, name)
 		)
+		if not mods["reskins-library"] and settings.startup["use-tier-icons"].value then
+			add_case(
+				"prototype." .. name .. ".tier-icons",
+				name .. " has one tier marker per tier",
+				item and item.icons and #item.icons == tier + 2,
+				nil,
+				{expected = tier, actual = item and item.icons and (#item.icons - 2) or 0}
+			)
+		end
 		add_case(
 			"prototype." .. name .. ".generator",
 			name .. " has the expected generator parameters",
@@ -108,6 +117,23 @@ function runner.run(profile)
 				and entity.energy_source.output_flow_limit == expected_power,
 			nil,
 			entity
+		)
+		add_case(
+			"prototype." .. name .. ".graphics",
+			name .. " has animations for every direction",
+			entity
+				and entity.pictures
+				and entity.pictures.north and entity.pictures.north.animation
+				and entity.pictures.east and entity.pictures.east.animation
+				and entity.pictures.south and entity.pictures.south.animation
+				and entity.pictures.west and entity.pictures.west.animation,
+			nil,
+			{
+				north = entity and entity.pictures and entity.pictures.north and entity.pictures.north.animation ~= nil,
+				east = entity and entity.pictures and entity.pictures.east and entity.pictures.east.animation ~= nil,
+				south = entity and entity.pictures and entity.pictures.south and entity.pictures.south.animation ~= nil,
+				west = entity and entity.pictures and entity.pictures.west and entity.pictures.west.animation ~= nil,
+			}
 		)
 		add_case(
 			"prototype." .. name .. ".visibility",

@@ -163,8 +163,20 @@ function _entity(prefix, tint, tier, tiers, usage_priority)
       output_flow_limit = power*tier.."MW",
       -- buffer_capacity = "5MJ",
     },
-    horizontal_animation = animation(tint),
-    vertical_animation = animation(tint),
+    pictures = {
+      north = {
+        animation = animation(tint),
+      },
+      east = {
+        animation = animation(tint),
+      },
+      south = {
+        animation = animation(tint),
+      },
+      west = {
+        animation = animation(tint),
+      },
+    },
     smoke = {
       {
         name = "gas-power-station-smoke",

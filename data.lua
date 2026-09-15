@@ -104,7 +104,7 @@ for i = 1, max_tiers do
 	elseif settings.startup["use-tier-icons"].value then
 		local tier_icons = add_tier_icons(i, tint)
 		-- log(serpent.block(tier_icons))
-		for j = 1, tiers, 1 do
+		for j = 1, tier, 1 do
 			item.icons[j+2] = tier_icons[j]
 		end
 	end

@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.1
+Date: 2026-09-15
+  Changes:
+    - fixed mixxing graphics and wrong tier icons
+---------------------------------------------------------------------------------------------------
+Version: 1.2.0
+Date: 2026-09-15
+  Changes:
+    - migrated generator graphics and test support to Factorio 2.1
+    - fixed tier icon markers for generator tiers 4 through 6
+---------------------------------------------------------------------------------------------------
 Version: 1.1.9
 Date: 2026-09-15
   Changes:

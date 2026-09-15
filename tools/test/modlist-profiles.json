@@ -9,7 +9,7 @@
     },
     "tgg_space_age": {
       "label": "Tiered Gas Generator + Space Age",
-      "mods": ["elevated-rails", "quality", "space-age", "tiered-gas-generator"]
+      "mods": ["elevated-rails", "quality", "recycler", "space-age", "tiered-gas-generator"]
     },
     "tgg_angels": {
       "label": "Tiered Gas Generator + Angel's mods",
